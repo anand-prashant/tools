@@ -1547,7 +1547,7 @@
                 try {
                     const text = atob(file.data.split(',')[1]);
                     modalBody.innerHTML = `
-                        <pre style="background: var(--hover-color); padding: 15px; border-radius: 8px; max-height: 60vh; overflow: auto; text-align: left; font-family: 'Courier New', monospace; font-size: 13px; margin: 0;">${escapeHtml(text)}</pre>
+                        <pre style="background: var(--hover-color); padding: 15px; border-radius: 8px; max-height: 60vh; overflow: auto; text-align: left; font-family: Monaco, 'Courier New', monospace; font-size: 13px; margin: 0;">${escapeHtml(text)}</pre>
                     `;
                 } catch (e) {
                     modalBody.innerHTML = `
@@ -1711,6 +1711,7 @@
 </body>
 
 </html>
+
 
 
 
