@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Attendance · Analyst</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide-icons/0.263.1/font/lucide.min.css">
+    <link rel="icon" type="image/x-icon" href="https://blogger.googleusercontent.com/img/a/AVvXsEg_TODhvKCHFwo1mh_Mm7zThcLzw3pGdkH_d_XPIFpDhHdIm30-Z6o7dNocvTE-UUKo6Un61jBEbqlKqEoNWMjdhMn_ZDUA-Etz8I7JCN1IjBYEoE5wWBouY2z3-MVNwtEByOFltswMpHMxLWqwQDcN072Za0Io42Si2uJmiT3AxuE-fnADf8xOcDpy">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #fef3ec;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            color: #281f18;
+        }
+        .container {
+            max-width: 720px;
+            width: 100%;
+            background: white;
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            box-shadow: 0 20px 35px -8px rgba(232, 89, 12, 0.18), 0 8px 18px rgba(0,0,0,0.02);
+            padding: 1.8rem 1.5rem 2.2rem;
+            border: 1px solid #ffe2d1;
+        }
+        .top-mast {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem 0.75rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+        }
+        .top-mast h1 {
+            font-weight: 600;
+            font-size: 1.95rem;
+            letter-spacing: -0.02em;
+            color: #3f2a1b;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .top-mast h1 i {
+            color: #e65300;
+            font-size: 2.3rem;
+        }
+        i.lucide {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .assumption {
+            background: #fff4ea;
+            border-radius: 1.8rem;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #533f2e;
+            border-left: 6px solid #e65300;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            box-shadow: 0 2px 8px rgba(230,83,0,0.1);
+        }
+        .assumption i {
+            color: #e65300;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .info-term {
+            position: relative;
+            cursor: pointer;
+            color: #b45309;
+            font-weight: 500;
+            border-bottom: 1px dotted #b45309;
+        }
+        .info-box {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 130%;
+            left: 0;
+            width: 260px;
+            background: #ffffff;
+            color: #333;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+        .info-term:hover .info-box {
+            visibility: visible;
+            opacity: 1;
+        }
+        .subjects-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .subject-card {
+            background: #ffffff;
+            border: 1.5px solid #ffdac8;
+            border-radius: 2rem;
+            padding: 1.3rem 1.2rem 1.2rem 1.2rem;
+            box-shadow: 0 4px 10px rgba(255, 225, 200, 0.3);
+            transition: all 0.15s;
+        }
+        .subject-card:hover {
+            border-color: #fe9f5a;
+        }
+        .subject-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .field-group {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #fefaf7;
+            border-radius: 3rem;
+            padding: 0.2rem 0.2rem 0.2rem 1rem;
+            border: 1px solid #ffdecb;
+        }
+        .field-group i {
+            color: #e65300;
+            font-size: 1.25rem;
+            min-width: 1.6rem;
+            text-align: center;
+        }
+        .field-group input {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            padding: 0.9rem 1rem 0.9rem 0.8rem;
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            font-weight: 450;
+            color: #2e1f14;
+        }
+        .field-group input:focus {
+            outline: 2px solid #ffb585;
+            border-radius: 2.5rem;
+            background: rgba(255,255,255,0.7);
+        }
+        .field-group input::placeholder {
+            color: #bb9f8a;
+            font-weight: 400;
+        }
+        .remove-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.7rem;
+        }
+        .remove-btn {
+            background: #fff3ed;
+            border: 1.5px solid #fec3a7;
+            border-radius: 3rem;
+            padding: 0.5rem 1.3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 550;
+            color: #b3470a;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .remove-btn i {
+            font-size: 1.2rem;
+            color: #c94d0b;
+        }
+        .remove-btn:hover, .remove-btn:active {
+            background: #fcdacb;
+            border-color: #e65300;
+        }
+        .add-btn {
+            background: #ffffff;
+            border: 2px dashed #fcb586;
+            border-radius: 3rem;
+            padding: 1rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #bd4806;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 1.8rem;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .add-btn i {
+            font-size: 1.5rem;
+            color: #e65300;
+        }
+        .add-btn:active {
+            background: #fff1e6;
+            border-color: #e8590c;
+        }
+        .semester-panel {
+            background: #fff6ef;
+            border-radius: 2.5rem;
+            padding: 1.3rem 1.5rem;
+            margin: 1.5rem 0 2.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .date-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .date-group label {
+            font-weight: 600;
+            color: #633f26;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .date-group input[type="date"] {
+            font-family: 'Inter', sans-serif;
+            border: 1.5px solid #fec6a3;
+            border-radius: 3rem;
+            padding: 0.8rem 1.4rem;
+            background: white;
+            font-size: 1rem;
+            color: #2d1f14;
+            font-weight: 500;
+            outline: none;
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+        .calculate-btn {
+            background: #e65300;
+            border: none;
+            border-radius: 3rem;
+            padding: 1rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            box-shadow: 0 8px 18px -6px #e65300;
+            transition: 0.15s;
+            border: 1px solid #cf4c02;
+            width: 100%;
+        }
+        .calculate-btn i {
+            font-size: 1.3rem;
+        }
+        .calculate-btn:active {
+            background: #c94900;
+            transform: scale(0.99);
+            box-shadow: 0 4px 10px -3px #c94900;
+        }
+        .result-section {
+            margin-top: 2rem;
+            border-radius: 2rem;
+            background: #fefcf9;
+            border: 1px solid #ffdcc6;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+            font-size: 0.85rem;
+        }
+        th {
+            background: #ffefe4;
+            color: #572f14;
+            font-weight: 600;
+            padding: 1rem 0.4rem;
+            white-space: nowrap;
+            border-bottom: 2px solid #feb27b;
+        }
+        td {
+            padding: 0.9rem 0.3rem;
+            border-bottom: 1px solid #ffd9c0;
+            color: #352618;
+            text-align: center;
+        }
+        td:first-child {
+            text-align: left;
+            font-weight: 550;
+            padding-left: 1rem;
+        }
+        .footer-note {
+            margin-top: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: #fcf3eb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 3rem;
+            font-size: 0.85rem;
+            color: #785e48;
+        }
+        .footer-note i {
+            color: #e65300;
+            font-size: 1.2rem;
+        }
+        @media (max-width: 420px) {
+            .container { padding: 1.2rem 1rem; }
+            .field-group { flex-wrap: wrap; padding: 0.5rem; }
+            .subject-card { padding: 1rem; }
+            .remove-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-mast">
+        <h1>
+            <i class="lucide lucide-bar-chart-2"></i> 
+            Attendance<span style="font-weight:400; color:#b95b1d;">· Analyst</span>
+        </h1>
+    </div>
+
+    <div class="assumption">
+        <i class="lucide lucide-info"></i>
+        <span>This analyser assumes constant weekly classes with no holidays, duty leave, or 
+            <span class="info-term">
+                bonus attendance
+                <span class="info-box">
+                    If you have attended all the classes in the first week, your attendance may increase by ~10% by the end of the semester. 😉
+                </span>
+            </span>
+            adjustments. Results provide an overall strategic attendance projection.
+        </span>
+    </div>
+
+    <div id="subjectsContainer" class="subjects-stack"></div>
+
+    <button class="add-btn" id="addSubjectBtn">
+        <i class="lucide lucide-plus-circle"></i> Add subject
+    </button>
+
+    <div class="semester-panel">
+        <div class="date-group">
+            <label><i class="lucide lucide-calendar"></i> Semester End date</label>
+            <input type="date" id="endDate" value="2026-05-20">
+        </div>
+        <button class="calculate-btn" onclick="calculateAttendance()">
+            <i class="lucide lucide-trending-up"></i> Analyze
+        </button>
+    </div>
+
+    <div id="resultTable" class="result-section"></div>
+
+    <div class="footer-note">
+        <i class="lucide lucide-clock"></i>
+        <span>Required classes shown as count. ✓ achieved / ✗ impossible</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        function createSubjectCard(name = '', percent = '', weekly = '', conducted = '') {
+            const card = document.createElement('div');
+            card.className = 'subject-card';
+            card.innerHTML = `
+                <div class="subject-fields">
+                    <div class="field-group">
+                        <i class="lucide lucide-book-open"></i>
+                        <input type="text" placeholder="Subject name (e.g. CSE001)" value="${name.replace(/"/g, '&quot;')}">
+                    </div>
+                    <div class="field-group">
+                        <i class="lucide lucide-percent"></i>
+                        <input type="number" placeholder="Current attendance %" min="0" max="100" value="${percent}">
+                    </div>
+                    <div class="field-group">
+                        <i class="lucide lucide-calendar-range"></i>
+                        <input type="number" placeholder="Weekly classes" min="0" value="${weekly}">
+                    </div>
+                    <div class="field-group">
+                        <i class="lucide lucide-list-checks"></i>
+                        <input type="number" placeholder="Classes held so far" min="0" value="${conducted}">
+                    </div>
+                    <div class="remove-area">
+                        <button class="remove-btn"><i class="lucide lucide-trash-2"></i> Remove subject</button>
+                    </div>
+                </div>
+            `;
+            card.querySelector('.remove-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                card.remove();
+            });
+            return card;
+        }
+
+        const container = document.getElementById('subjectsContainer');
+        container.appendChild(createSubjectCard());
+
+        document.getElementById('addSubjectBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            container.appendChild(createSubjectCard());
+        });
+
+        window.calculateAttendance = function() {
+            const cards = document.querySelectorAll('.subject-card');
+            const endDateStr = document.getElementById('endDate').value;
+            if (!endDateStr) { alert('Select semester end date'); return; }
+
+            const endDate = new Date(endDateStr);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const diffTime = endDate - today;
+            const remainingWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+            if (remainingWeeks < 0) { alert('Semester end is in the past'); return; }
+            if (cards.length === 0) { document.getElementById('resultTable').innerHTML = ''; return; }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Remaining Classes</th>
+                            <th>Max Possible %</th>
+                            <th>70% <span style="font-weight:400;">(must attend)</span></th>
+                            <th>75% <span style="font-weight:400;">(must attend)</span></th>
+                            <th>80% <span style="font-weight:400;">(must attend)</span></th>
+                            <th>85% <span style="font-weight:400;">(must attend)</span></th>
+                            <th>90% <span style="font-weight:400;">(must attend)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            cards.forEach(card => {
+                const inputs = card.querySelectorAll('.field-group input');
+                const name = inputs[0]?.value.trim() || 'Unnamed';
+                const currentPercent = parseFloat(inputs[1]?.value);
+                const perWeek = parseInt(inputs[2]?.value, 10);
+                const conducted = parseInt(inputs[3]?.value, 10);
+
+                if (isNaN(currentPercent) || isNaN(perWeek) || isNaN(conducted) || perWeek < 0 || conducted < 0) {
+                    html += `<tr><td>${name}</td><td colspan="7" style="color:#9f7e64;">— fill all numeric fields —</td></tr>`;
+                    return;
+                }
+
+                const remainingClasses = remainingWeeks * perWeek;
+                const totalFinal = conducted + remainingClasses;
+                const attendedNow = (currentPercent / 100) * conducted;
+                const maxPercent = ((attendedNow + remainingClasses) / totalFinal) * 100;
+
+                function need(target) {
+                    const needed = (target / 100) * totalFinal - attendedNow;
+                    if (needed <= 0.01) return '✓ achieved';
+                    if (needed > remainingClasses + 0.01) return '✗ impossible';
+                    return `${Math.ceil(needed)} class${Math.ceil(needed) !== 1 ? 'es' : ''}`;
+                }
+
+                html += `<tr>
+                    <td>${name}</td>
+                    <td>${remainingClasses}</td>
+                    <td>${maxPercent.toFixed(1)}%</td>
+                    <td>${need(70)}</td>
+                    <td>${need(75)}</td>
+                    <td>${need(80)}</td>
+                    <td>${need(85)}</td>
+                    <td>${need(90)}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('resultTable').innerHTML = html;
+        };
+    })();
+</script>
+</body>
+</html>
